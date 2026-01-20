@@ -46,4 +46,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function sentTransactions() {
+    return $this->hasMany(Transaction::class, 'from_user_id');
+    }
+
+    public function receivedTransactions() {
+        return $this->hasMany(Transaction::class, 'to_user_id');
+    }
+
+    public function transactions() {
+    return $this->sentTransactions()->union($this->receivedTransactions());
+    }
 }
