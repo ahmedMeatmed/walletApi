@@ -58,4 +58,8 @@ class User extends Authenticatable
     public function transactions() {
     return $this->sentTransactions()->union($this->receivedTransactions());
     }
+
+    public function wallet() {
+    return $this->hasOne(Wallet::class);
+    }
 }
