@@ -34,7 +34,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             ]);
 
-        return response()->json("user created successfully", 201);
+        return response()->json("user And Wallet created successfully", 201);
     }
 
     public function update(UpdateUserRequest $request, $id){
