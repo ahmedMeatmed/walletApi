@@ -16,6 +16,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('users', UserController::class)->except(['store']);
 
         Route::post('/wallet/charge', [WalletController::class, 'charge']);
+
+        Route::post('/transfer', [WalletController::class, 'transfer']);
+
+        Route::post('/transfer/{transaction}/confirm', [WalletController::class, 'confirm']);
+
+        Route::post('/transfer/{transaction}/cancel', [WalletController::class, 'cancel']);
   
         Route::post('/logout', [AuthController::class, 'logout']);
 });
