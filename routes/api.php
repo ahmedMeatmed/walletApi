@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\WalletController;
 use App\Http\Controllers\Api\v1\Auth\AuthController;
 use App\Http\Controllers\Api\v1\Auth\UserController;
-
+use App\Http\Controllers\Api\v1\ServiceController;
 
 Route::post('users',[UserController::class,'store']);
 
@@ -22,6 +22,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/transfer/{transaction}/confirm', [WalletController::class, 'confirm']);
 
         Route::post('/transfer/{transaction}/cancel', [WalletController::class, 'cancel']);
+
+        Route::apiResource('services',[ServiceController::class]);
+
+        Route::post('/services/{id}/restore', [ServiceController::class, 'restore']);
   
         Route::post('/logout', [AuthController::class, 'logout']);
 });
