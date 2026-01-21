@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TransactionNotification extends Notification
+class TransactionNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -29,7 +29,7 @@ class TransactionNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database','mail'];
     }
 
     /**
@@ -38,9 +38,11 @@ class TransactionNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject('Transaction Notification')
+            ->line($this->buildMessage())
+            ->line('Amount: ' . $this->transaction->amount)
+            // ->action('View Transactions', url('/transactions'))
+            ->line('Thank you for using our wallet.');
     }
 
     /**
