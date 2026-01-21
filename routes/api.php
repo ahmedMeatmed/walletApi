@@ -3,10 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\WalletController;
+use App\Http\Controllers\Api\v1\ServiceController;
 use App\Http\Controllers\Api\v1\Auth\AuthController;
 use App\Http\Controllers\Api\v1\Auth\UserController;
+use App\Http\Controllers\Api\v1\TransactionController;
 use App\Http\Controllers\Api\v1\NotificationController;
-use App\Http\Controllers\Api\v1\ServiceController;
 
 Route::post('users',[UserController::class,'store']);
 
@@ -31,6 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/services/{id}/purchase', [ServiceController::class, 'purchase']);
 
         Route::apiResource('/notifications',NotificationController::class)->only(['index','show']);
+
+        Route::get('/transactions', [TransactionController::class, 'index']);
   
         Route::post('/logout', [AuthController::class, 'logout']);
 });
