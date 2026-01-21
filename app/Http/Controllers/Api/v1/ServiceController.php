@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\ServiceResource;
+use App\Http\Services\PurchaseService;
 
 class ServiceController extends Controller
 {
@@ -53,5 +54,15 @@ class ServiceController extends Controller
             return response()->json(['message' => 'Service restored']);
         }
         return response()->json(['message' => 'Service not found or not deleted'], 404);
+    }
+
+    public function purchase(Request $request, $id , PurchaseService $Purchase)
+    {
+        $service = Service::findOrFail($id);
+        $user = $request->user();
+
+        $Purchase->purchase($user, $service);
+
+        return response()->json(['message' => 'Service purchased successfully']);
     }
 }

@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('services',ServiceController::class);
 
         Route::post('/services/{id}/restore', [ServiceController::class, 'restore']);
+        
+        Route::post('/services/{id}/purchase', [ServiceController::class, 'purchase']);
   
         Route::post('/logout', [AuthController::class, 'logout']);
 });
