@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::post('/transfer/{transaction}/cancel', [WalletController::class, 'cancel']);
 
-        Route::apiResource('services',[ServiceController::class]);
+        Route::apiResource('services',ServiceController::class);
 
         Route::post('/services/{id}/restore', [ServiceController::class, 'restore']);
   

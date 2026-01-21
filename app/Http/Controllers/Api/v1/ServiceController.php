@@ -7,13 +7,15 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use App\Http\Resources\ServiceResource;
 
 class ServiceController extends Controller
 {
     //
      public function index()
     {
-        return Service::where('is_active', true)->get();
+        $services = Service::where('is_active', true)->get();
+        return ServiceResource::collection($services);
     }
 
      public function store(StoreServiceRequest $request)
@@ -21,12 +23,12 @@ class ServiceController extends Controller
       
         $service = Service::create($request->all());
 
-        return response()->json($service, 201);
+        return response()->json(new ServiceResource($service), 201);
     }
 
       public function show(Service $service)
     {
-        return $service;
+        return new ServiceResource($service);
     }
 
        public function update(UpdateServiceRequest $request, Service $service)
@@ -34,7 +36,7 @@ class ServiceController extends Controller
 
         $service->update($request->all());
 
-        return response()->json($service);
+        return response()->json(new ServiceResource($service));
     }
 
        public function destroy(Service $service)
