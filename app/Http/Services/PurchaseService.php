@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Service;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\TransactionNotification;
 
 
 class PurchaseService
@@ -22,7 +23,8 @@ class PurchaseService
 
             $wallet->decrement('balance', $service->price);
 
-            Transaction::create([
+            $transaction = Transaction::create([
+
                 'from_user_id' => $user->id,
                 'type' => 'service_purchase',
                 'status' => 'completed',
@@ -30,6 +32,8 @@ class PurchaseService
                 'reference_id' => $service->id,
                 'reference_type' => Service::class,
             ]);
+
+            $user->notify(new TransactionNotification($transaction));
         });
 }
 }

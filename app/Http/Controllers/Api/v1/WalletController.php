@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\TransferService;
 use App\Http\Requests\P2PTransferRequest;
 use App\Http\Requests\ChargeWalletRequest;
+use App\Notifications\TransactionNotification;
+use Symfony\Component\HttpFoundation\Request;
 
 class WalletController extends Controller
 {
@@ -30,6 +32,8 @@ class WalletController extends Controller
                 'status' => 'completed',
                 'amount' => $request->amount,
             ]);
+
+            $user->notify(new TransactionNotification($transaction));
 
               return response()->json([
             'message' => 'Wallet charged successfully',
@@ -61,11 +65,12 @@ class WalletController extends Controller
         return response()->json(['message' => 'Transfer confirmed']);
     }
 
-    public function cancel($transaction, TransferService $service)
+    public function cancel($transaction, TransferService $service,Request $request)
     {
         $transaction = Transaction::findOrFail($transaction);
+        $sender = $request->user();
 
-        $service->cancel($transaction);
+        $service->cancel($transaction,$sender);
 
         return response()->json(['message' => 'Transfer cancelled']);
     }
