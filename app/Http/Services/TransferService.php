@@ -22,12 +22,21 @@ class TransferService
         ]);
     }
 
-     public function confirm(Transaction $transaction)
+     public function confirm($transaction)
     {
+
         DB::transaction(function () use ($transaction) {
 
-            $senderWallet = $transaction->sender->lockForUpdate()->first()->wallet;
-            $receiverWallet = $transaction->receiver->lockForUpdate()->first()->wallet;
+
+            $senderWallet = User::where('id', $transaction->from_user_id)
+                        ->lockForUpdate()
+                        ->first()
+                        ->wallet;
+
+    $receiverWallet = User::where('id', $transaction->to_user_id)
+                          ->lockForUpdate()
+                          ->first()
+                          ->wallet;
 
             if ($senderWallet->balance < $transaction->amount) {
                 throw new \Exception("Insufficient balance");
@@ -43,7 +52,7 @@ class TransferService
         });
     }
 
-     public function cancel(Transaction $transaction)
+     public function cancel($transaction)
     {
         if ($transaction->status !== 'pending') {
             throw new \Exception("Cannot cancel a completed or cancelled transaction");
