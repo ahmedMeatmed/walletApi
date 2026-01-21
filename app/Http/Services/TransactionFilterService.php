@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TransactionFilterService{
 
-    public function filter(Request $request){
-        
+    public function filter($request){
+
           $transactions = Transaction::query()
             ->where(function ($q) use ($request) {
                 $q->where('from_user_id', $request->user()->id)
