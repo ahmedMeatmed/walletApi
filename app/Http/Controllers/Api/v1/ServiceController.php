@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PurchaseServiceRequest;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\ServiceResource;
@@ -56,7 +57,7 @@ class ServiceController extends Controller
         return response()->json(['message' => 'Service not found or not deleted'], 404);
     }
 
-    public function purchase(Request $request, $id , PurchaseService $Purchase)
+    public function purchase(PurchaseServiceRequest $request, $id , PurchaseService $Purchase)
     {
         $service = Service::findOrFail($id);
         $user = $request->user();

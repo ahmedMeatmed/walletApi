@@ -6,9 +6,11 @@ use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CancelTransactionRequest;
 use App\Http\Services\TransferService;
 use App\Http\Requests\P2PTransferRequest;
 use App\Http\Requests\ChargeWalletRequest;
+use App\Http\Requests\ConfirmTransactionRequest;
 use App\Notifications\TransactionNotification;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -56,18 +58,20 @@ class WalletController extends Controller
         ]);
     }
 
-    public function confirm($transaction, TransferService $service)
+    public function confirm(TransferService $service,ConfirmTransactionRequest $request)
     {
-        $transaction = Transaction::findOrFail($transaction);
+
+        $transaction = Transaction::findOrFail($request->transaction);
 
         $service->confirm($transaction);
 
         return response()->json(['message' => 'Transfer confirmed']);
     }
 
-    public function cancel($transaction, TransferService $service,Request $request)
+    public function cancel(CancelTransactionRequest $request, TransferService $service)
     {
-        $transaction = Transaction::findOrFail($transaction);
+
+        $transaction = Transaction::findOrFail($request->transaction);
         $sender = $request->user();
 
         $service->cancel($transaction,$sender);
