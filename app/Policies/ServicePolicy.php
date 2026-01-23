@@ -13,7 +13,7 @@ class ServicePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin';
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class ServicePolicy
      */
     public function view(User $user, Service $service): bool
     {
-        return $user->role === 'admin';
+        return true;
     }
 
     /**

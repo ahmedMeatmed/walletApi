@@ -13,7 +13,7 @@ class TransactionPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -67,11 +67,11 @@ class TransactionPolicy
 
        public function confirm(User $user, Transaction $transaction)
     {
-        return $transaction->to_user_id === $user->id;
+        return $transaction->from_user_id == $user->id;
     }
 
         public function cancel(User $user, Transaction $transaction)
     {
-        return $transaction->from_user_id === $user->id;
+        return $transaction->to_user_id === $user->id;
     }
 }

@@ -27,9 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::apiResource('services',ServiceController::class);
 
-        Route::post('/services/{id}/restore', [ServiceController::class, 'restore']);
+        Route::post('/services/{service}/restore', [ServiceController::class, 'restore']);
         
-        Route::post('/services/{id}/purchase', [ServiceController::class, 'purchase']);
+        Route::post('/services/{service}/purchase', [ServiceController::class, 'purchase']);
 
         Route::apiResource('/notifications',NotificationController::class)->only(['index','show']);
 

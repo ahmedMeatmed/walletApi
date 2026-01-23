@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Transaction;
+use App\Policies\TransactionPolicy;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ConfirmTransactionRequest extends FormRequest
@@ -11,10 +13,11 @@ class ConfirmTransactionRequest extends FormRequest
      */
     public function authorize(): bool
     {
+     
         $transaction = $this->route('transaction');
-
-        return $transaction && $this->user()->can('confirm', $transaction);    
-        }
+        $transaction = Transaction::find($transaction);
+        return $this->user()->can('confirm',$transaction);
+    }  
 
     /**
      * Get the validation rules that apply to the request.
