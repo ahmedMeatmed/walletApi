@@ -67,13 +67,11 @@ class TransactionPolicy
 
        public function confirm(User $user, Transaction $transaction)
     {
-        return $transaction->to_user_id === $user->id
-            && $transaction->status === 'pending';
+        return $transaction->to_user_id === $user->id;
     }
 
         public function cancel(User $user, Transaction $transaction)
     {
-        return $transaction->to_user_id === $user->id
-            && $transaction->status === 'pending';
+        return $transaction->from_user_id === $user->id;
     }
 }
